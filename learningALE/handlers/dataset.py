@@ -70,7 +70,7 @@ actions, and rewards.
     def add_terminal(self):
         last_top = self.top - 1
         if last_top < 0:
-            last_top = self.max_steps
+            last_top = self.max_steps - 1
         self.terminal[last_top] = True
 
     def __len__(self):

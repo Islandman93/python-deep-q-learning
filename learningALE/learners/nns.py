@@ -65,7 +65,7 @@ class CNN:
         est_rew_tp1 = (1-self.terminals) * 0.95 * T.max(net_output_statetp1, axis=1)
         rewards = self.rewards + est_rew_tp1
         diff = rewards - net_output_training[T.arange(32), self.actions]
-        loss = T.mean(diff**2)
+        loss = T.mean(0.5*diff**2)
         # loss = T.mean(diff**2)
         # # get layaer parms
         params = lasagne.layers.get_all_params(self.l_out)

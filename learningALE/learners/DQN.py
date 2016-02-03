@@ -7,15 +7,15 @@ import numpy as np
 
 
 class DQNLearner(learner):
-    def __init__(self, skip_frame, num_actions, load=None):
+    def __init__(self, skip_frame, num_actions, load=None, random_state=np.random.RandomState()):
         super().__init__()
 
         rand_vals = (1, 0.1, 1000000)  # starting at 1 anneal eGreedy policy to 0.1 over 1,000,000 actions
         self.action_handler = ActionHandler(ActionPolicy.eGreedy, rand_vals)
 
         self.minimum_replay_size = 100
-        self.exp_handler = DataSet(80, 86, np.random.RandomState(), max_steps=1000000, phi_length=skip_frame)
-        self.cnn = CNN((None, skip_frame, 86, 80), num_actions)
+        self.exp_handler = DataSet(84, 84, random_state, max_steps=1000000, phi_length=skip_frame)
+        self.cnn = CNN((None, skip_frame, 84, 84), num_actions)
 
         self.skip_frame = skip_frame
         self.discount = .95
@@ -47,7 +47,7 @@ class DQNLearner(learner):
 
     def get_game_action(self):
         return self.action_handler.action_vect_to_game_action(
-            self.get_action(self.exp_handler.phi(self.state_tm1).reshape(1, self.skip_frame, 86, 80)))
+            self.get_action(self.exp_handler.phi(self.state_tm1).reshape(1, self.skip_frame, 84, 84)))
 
     def set_legal_actions(self, legal_actions):
         self.action_handler.set_legal_actions(legal_actions)
@@ -63,16 +63,16 @@ class DQNTester:
     def __init__(self, skip_frame, num_actions, load, rand_val=0.05):
         rand_vals = (rand_val, rand_val, 2)
         self.action_handler = ActionHandler(ActionPolicy.eGreedy, rand_vals)
-        self.cnn = CNN((None, skip_frame, 86, 80), num_actions, 1)
+        self.cnn = CNN((None, skip_frame, 84, 84), num_actions, 1)
         self.cnn.load(load)
         self.q_vals = list()
         self.skip_frame = skip_frame
-        self.exp_handler = DataSet(80, 86, np.random.RandomState(), phi_length=skip_frame)
+        self.exp_handler = DataSet(84, 84, np.random.RandomState(), phi_length=skip_frame)
         self.skip_frame = skip_frame
-        self.state_tm1 = np.zeros((86, 80), dtype=np.uint8)
+        self.state_tm1 = np.zeros((84, 84), dtype=np.uint8)
 
     def get_game_action(self):
-        q_vals = self.cnn.get_output(self.exp_handler.phi(self.state_tm1).reshape(1, self.skip_frame, 86, 80))[0]
+        q_vals = self.cnn.get_output(self.exp_handler.phi(self.state_tm1).reshape(1, self.skip_frame, 84, 84))[0]
         self.q_vals.append(q_vals)
         return self.action_handler.action_vect_to_game_action(q_vals)
 

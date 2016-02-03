@@ -46,7 +46,7 @@ for episode in range(5000):
 
     et = time.time()
     print("Episode " + str(episode) + " ended with score: " + str(total_reward))
-    print('Total Time:', et - st, 'Frame Count:', game_handler.frameCount, 'FPS:', game_handler.frameCount / (et - st))
+    print('Total Time:', et - st, 'Frame Count:', game_handler.total_frame_count, 'FPS:', game_handler.total_frame_count / (et - st))
 
 plt.ioff()
 plt.show()

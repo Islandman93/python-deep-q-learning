@@ -71,7 +71,7 @@ class ActionHandler:
             elif self.actionPolicy == ActionPolicy.randVals:
                 action_values += np.random.randn(self.numActions) * self.randVal
 
-        action = np.where(action_values == np.max(action_values))[0][0]
+        action = np.argmax(action_values)
         self.actionCount += 1
 
         return action

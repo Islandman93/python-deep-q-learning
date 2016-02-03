@@ -4,6 +4,8 @@ import numpy as np
 
 class ExperienceHandler:
     """
+    Depreciated in favor of :class:`DataSet` written by spragunr. It is faster, has a lower memory footprint, and is
+    battle tested.
     The :class:`ExperienceHandler` class handles storing of experience used for experience replay techniques. It keeps a
     list of states, rewards, actions, and terminal states. Design decisions: This class is relatively optimized, Lists
     were chosen because they are easy to append to and can be easily converted to numpy arrays for training.
